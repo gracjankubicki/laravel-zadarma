@@ -25,7 +25,7 @@ final readonly class ZadarmaWebhook
 
         return new self(
             payload: $payload,
-            event: is_string($event) ? ZadarmaWebhookEvent::tryFrom($event) : null,
+            event: is_string($event) ? ZadarmaWebhookEvent::tryFrom(self::normalizeEventName($event)) : null,
         );
     }
 
@@ -41,7 +41,7 @@ final readonly class ZadarmaWebhook
 
     public function is(ZadarmaWebhookEvent|string $event): bool
     {
-        $expected = $event instanceof ZadarmaWebhookEvent ? $event->value : $event;
+        $expected = $event instanceof ZadarmaWebhookEvent ? $event->value : self::normalizeEventName($event);
 
         return $this->eventName() === $expected;
     }
@@ -49,5 +49,10 @@ final readonly class ZadarmaWebhook
     public function get(string $key, mixed $default = null): mixed
     {
         return data_get($this->payload, $key, $default);
+    }
+
+    public static function normalizeEventName(string $event): string
+    {
+        return strtoupper($event);
     }
 }

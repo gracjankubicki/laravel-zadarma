@@ -130,7 +130,32 @@ if ($webhook->is(ZadarmaWebhookEvent::NotifyStart)) {
 }
 ```
 
-Signature verification is intentionally not enabled until the public Zadarma documentation defines a webhook signature contract.
+The package also includes an optional Laravel route for simple webhook ingestion. It is disabled by default because it exposes a public endpoint:
+
+```php
+// config/zadarma.php
+'webhooks' => [
+    'signature_verification' => true,
+
+    'routes' => [
+        'enabled' => true,
+        'path' => 'zadarma/webhook',
+        'name' => 'zadarma.webhook',
+        'middleware' => [],
+    ],
+],
+```
+
+When enabled, the route:
+
+- handles Zadarma's `GET ?zd_echo=...` challenge;
+- accepts `POST` webhook payloads;
+- dispatches `GracjanKubicki\LaravelZadarma\Events\ZadarmaWebhookReceived`;
+- optionally verifies the `Signature` header for documented webhook event signatures.
+
+For `NOTIFY_START` and `NOTIFY_IVR`, Zadarma can use the HTTP response to dynamically route the current call. In that case, define your own application route and use `ZadarmaWebhook::fromRequest($request)` directly so your controller can return the required call-control response.
+
+Zadarma recommends limiting access to webhook URLs to `185.45.152.40/30`.
 
 ## Development
 

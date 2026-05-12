@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace GracjanKubicki\LaravelZadarma;
 
+use GracjanKubicki\LaravelZadarma\Http\Controllers\ZadarmaWebhookController;
 use GracjanKubicki\LaravelZadarma\Saloon\ZadarmaConnector;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 final class LaravelZadarmaServiceProvider extends ServiceProvider
@@ -37,5 +39,23 @@ final class LaravelZadarmaServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/zadarma.php' => $this->app->configPath('zadarma.php'),
         ], 'zadarma-config');
+
+        if (! (bool) $this->app['config']->get('zadarma.webhooks.routes.enabled', false)) {
+            return;
+        }
+
+        $path = $this->app['config']->get('zadarma.webhooks.routes.path', 'zadarma/webhook');
+        $name = $this->app['config']->get('zadarma.webhooks.routes.name', 'zadarma.webhook');
+        $middleware = $this->app['config']->get('zadarma.webhooks.routes.middleware', []);
+
+        $route = Route::match(['GET', 'POST'], trim(is_string($path) ? $path : 'zadarma/webhook', '/'), ZadarmaWebhookController::class);
+
+        if (is_string($name)) {
+            $route->name($name);
+        }
+
+        if (is_string($middleware) || is_array($middleware)) {
+            $route->middleware($middleware);
+        }
     }
 }
