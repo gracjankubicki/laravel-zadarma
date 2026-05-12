@@ -1,0 +1,9 @@
+/vendor
+/.phpunit.cache
+/.pest
+/coverage
+/coverage.xml
+/.phpunit.result.cache
+.DS_Store
+/.idea
+/implementation-plans

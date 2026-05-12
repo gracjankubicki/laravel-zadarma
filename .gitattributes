@@ -1,0 +1,8 @@
+* text=auto
+
+/tests export-ignore
+/.github export-ignore
+/phpunit.xml.dist export-ignore
+/phpstan.neon export-ignore
+/pint.json export-ignore
+/rector.php export-ignore

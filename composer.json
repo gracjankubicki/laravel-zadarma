@@ -1,0 +1,80 @@
+{
+    "name": "gracjankubicki/laravel-zadarma",
+    "description": "Laravel SDK for the Zadarma API built on Saloon.",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "laravel",
+        "zadarma",
+        "saloon",
+        "api-client",
+        "php-sdk"
+    ],
+    "homepage": "https://github.com/gracjankubicki/laravel-zadarma",
+    "support": {
+        "issues": "https://github.com/gracjankubicki/laravel-zadarma/issues",
+        "source": "https://github.com/gracjankubicki/laravel-zadarma"
+    },
+    "authors": [
+        {
+            "name": "Gracjan Kubicki",
+            "homepage": "https://github.com/gracjankubicki"
+        }
+    ],
+    "require": {
+        "php": "^8.5",
+        "illuminate/support": "^12.39 || ^13.0",
+        "saloonphp/laravel-plugin": "^4.3",
+        "saloonphp/saloon": "^4.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.25",
+        "orchestra/testbench": "^10.11 || ^11.1",
+        "pestphp/pest": "^4.7",
+        "phpstan/phpstan": "^2.1",
+        "rector/rector": "^2.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "GracjanKubicki\\LaravelZadarma\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "GracjanKubicki\\LaravelZadarma\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "pest",
+        "test:coverage": "pest --coverage --min=100",
+        "analyse": "phpstan analyse --memory-limit=1G",
+        "format": "pint",
+        "format:test": "pint --test",
+        "rector": "rector process",
+        "rector:test": "rector process --dry-run",
+        "check": [
+            "@format:test",
+            "@rector:test",
+            "@analyse",
+            "@test"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "GracjanKubicki\\LaravelZadarma\\LaravelZadarmaServiceProvider"
+            ],
+            "aliases": {
+                "Zadarma": "GracjanKubicki\\LaravelZadarma\\Facades\\Zadarma"
+            }
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
