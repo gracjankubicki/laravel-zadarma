@@ -18,6 +18,7 @@ class ZadarmaResponseData
         public readonly int $statusCode,
         public readonly ?string $status = null,
         public readonly ?string $message = null,
+        public readonly ?ZadarmaRateLimitData $rateLimit = null,
     ) {}
 
     public static function fromResponse(Response $response): static
@@ -37,6 +38,7 @@ class ZadarmaResponseData
             statusCode: $response->status(),
             status: is_string($payload['status'] ?? null) ? $payload['status'] : null,
             message: is_string($payload['message'] ?? null) ? $payload['message'] : null,
+            rateLimit: ZadarmaRateLimitData::fromResponse($response),
         );
     }
 

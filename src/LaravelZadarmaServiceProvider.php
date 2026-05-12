@@ -25,6 +25,10 @@ final class LaravelZadarmaServiceProvider extends ServiceProvider
                 key: (string) $config['key'],
                 secret: (string) $config['secret'],
                 baseUrl: (string) $config['base_url'],
+                rateLimitsEnabled: (bool) ($config['rate_limits']['enabled'] ?? true),
+                rateLimitCacheStore: is_string($config['rate_limits']['store'] ?? null) ? $config['rate_limits']['store'] : null,
+                generalRateLimitPerMinute: (int) ($config['rate_limits']['general_per_minute'] ?? 100),
+                rateLimitSleep: (bool) ($config['rate_limits']['sleep'] ?? false),
             );
         });
 

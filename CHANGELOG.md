@@ -4,6 +4,14 @@ All notable changes to `laravel-zadarma` will be documented in this file.
 
 ## Unreleased
 
+## 1.0.1 - 2026-05-12
+
+- Added Saloon rate-limit plugin integration with configurable general and statistics limits.
+- Added Zadarma rate-limit response header metadata to DTOs.
+- Added rate-limit documentation for web requests and queued jobs.
+
+## 1.0.0 - 2026-05-12
+
 - Added typed accessor layer for DTO payload values.
 - Added field-level DTO accessors across documented response DTOs.
 - Added typed request parameter enums and value objects with request serialization support.

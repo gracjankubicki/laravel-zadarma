@@ -13,6 +13,14 @@ return [
 
     'throw_on_api_error' => env('ZADARMA_THROW_ON_API_ERROR', true),
 
+    'rate_limits' => [
+        'enabled' => env('ZADARMA_RATE_LIMITS_ENABLED', true),
+        'store' => env('ZADARMA_RATE_LIMITS_STORE'),
+        'general_per_minute' => env('ZADARMA_RATE_LIMITS_GENERAL_PER_MINUTE', 100),
+        'statistics_per_minute' => env('ZADARMA_RATE_LIMITS_STATISTICS_PER_MINUTE', 3),
+        'sleep' => env('ZADARMA_RATE_LIMITS_SLEEP', false),
+    ],
+
     'webhooks' => [
         'signature_verification' => env('ZADARMA_WEBHOOK_SIGNATURE_VERIFICATION', false),
 

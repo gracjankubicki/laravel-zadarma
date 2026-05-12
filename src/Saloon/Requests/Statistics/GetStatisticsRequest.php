@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace GracjanKubicki\LaravelZadarma\Saloon\Requests\Statistics;
 
 use GracjanKubicki\LaravelZadarma\Saloon\Data\Statistics\GetStatisticsResponseData;
-use GracjanKubicki\LaravelZadarma\Saloon\Requests\ZadarmaRequest;
 use Saloon\Enums\Method;
 
-final class GetStatisticsRequest extends ZadarmaRequest
+final class GetStatisticsRequest extends ZadarmaStatisticsRequest
 {
     #[\Override]
     protected Method $method = Method::GET;

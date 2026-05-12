@@ -63,6 +63,7 @@ $dto->statusCode;
 $dto->status;
 $dto->message;
 $dto->payload;
+$dto->rateLimit?->remaining;
 ```
 
 DTOs keep the raw payload available and add a tolerant typed accessor layer:
@@ -105,6 +106,23 @@ new SetCallInfoNotificationsRequest([
     CallInfoNotification::NotifyEnd->value => false,
 ]);
 ```
+
+## Rate Limits
+
+The SDK uses Saloon's rate-limit plugin. Defaults:
+
+- general Zadarma API methods: `100/min`;
+- statistics methods: `3/min` by default, configurable to match your account/docs.
+
+```env
+ZADARMA_RATE_LIMITS_ENABLED=true
+ZADARMA_RATE_LIMITS_STORE=redis
+ZADARMA_RATE_LIMITS_GENERAL_PER_MINUTE=100
+ZADARMA_RATE_LIMITS_STATISTICS_PER_MINUTE=3
+ZADARMA_RATE_LIMITS_SLEEP=false
+```
+
+When the limit is reached, Saloon throws `RateLimitReachedException` by default. For queue jobs, use Saloon's `ApiRateLimited` middleware. See [Rate limits](docs/rate-limits.md).
 
 ## Endpoint Coverage
 
@@ -194,6 +212,7 @@ Zadarma recommends limiting access to webhook URLs to `185.45.152.40/30`. The op
 - [Webhooks](docs/webhooks.md)
 - [Teamsale CRM](docs/crm.md)
 - [Documents](docs/documents.md)
+- [Rate limits](docs/rate-limits.md)
 - [Release](docs/release.md)
 
 ## Development
