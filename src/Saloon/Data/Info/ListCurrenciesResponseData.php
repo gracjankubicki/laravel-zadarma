@@ -6,4 +6,13 @@ namespace GracjanKubicki\LaravelZadarma\Saloon\Data\Info;
 
 use GracjanKubicki\LaravelZadarma\Saloon\Data\ZadarmaResponseData;
 
-final class ListCurrenciesResponseData extends ZadarmaResponseData {}
+final class ListCurrenciesResponseData extends ZadarmaResponseData
+{
+    /**
+     * @return list<string>
+     */
+    public function currencies(): array
+    {
+        return array_values(array_filter($this->listValue('currencies'), is_string(...)));
+    }
+}

@@ -6,4 +6,13 @@ namespace GracjanKubicki\LaravelZadarma\Saloon\Data\Info;
 
 use GracjanKubicki\LaravelZadarma\Saloon\Data\ZadarmaResponseData;
 
-final class ListLanguagesResponseData extends ZadarmaResponseData {}
+final class ListLanguagesResponseData extends ZadarmaResponseData
+{
+    /**
+     * @return list<string>
+     */
+    public function languages(): array
+    {
+        return array_values(array_filter($this->listValue('languages'), is_string(...)));
+    }
+}

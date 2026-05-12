@@ -65,6 +65,34 @@ $dto->message;
 $dto->payload;
 ```
 
+DTOs keep the raw payload available and add a tolerant typed accessor layer:
+
+```php
+$dto->get('nested.value');
+$dto->string('customer.name');
+$dto->integer('messages');
+$dto->float('cost');
+$dto->boolean('is_mobile');
+$dto->arrayValue('info');
+$dto->listValue('senders');
+```
+
+Selected endpoint DTOs also expose field-level methods for documented response keys:
+
+```php
+use GracjanKubicki\LaravelZadarma\Saloon\Data\Info\GetBalanceResponseData;
+use GracjanKubicki\LaravelZadarma\Saloon\Data\Sms\SendSmsResponseData;
+
+/** @var GetBalanceResponseData $balance */
+$balance->balance();
+$balance->currency();
+
+/** @var SendSmsResponseData $sms */
+$sms->messages();
+$sms->cost();
+$sms->smsDetalization();
+```
+
 ## Endpoint Coverage
 
 This package contains request classes and DTO classes for the full endpoint matrix listed in the Zadarma documentation:
