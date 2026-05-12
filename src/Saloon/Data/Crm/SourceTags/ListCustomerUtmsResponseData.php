@@ -6,4 +6,13 @@ namespace GracjanKubicki\LaravelZadarma\Saloon\Data\Crm\SourceTags;
 
 use GracjanKubicki\LaravelZadarma\Saloon\Data\ZadarmaResponseData;
 
-final class ListCustomerUtmsResponseData extends ZadarmaResponseData {}
+final class ListCustomerUtmsResponseData extends ZadarmaResponseData
+{
+    /**
+     * @return list<mixed>
+     */
+    public function items(): array
+    {
+        return $this->listValue('items');
+    }
+}

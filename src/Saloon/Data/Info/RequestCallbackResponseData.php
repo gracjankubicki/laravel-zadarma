@@ -12,4 +12,19 @@ final class RequestCallbackResponseData extends ZadarmaResponseData
     {
         return $this->string('call_id');
     }
+
+    public function from(): ?string
+    {
+        return $this->string('from');
+    }
+
+    public function time(): ?string
+    {
+        return $this->string('time');
+    }
+
+    public function to(): ?string
+    {
+        return $this->string('to');
+    }
 }

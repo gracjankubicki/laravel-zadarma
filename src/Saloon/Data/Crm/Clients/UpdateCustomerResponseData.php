@@ -6,4 +6,13 @@ namespace GracjanKubicki\LaravelZadarma\Saloon\Data\Crm\Clients;
 
 use GracjanKubicki\LaravelZadarma\Saloon\Data\ZadarmaResponseData;
 
-final class UpdateCustomerResponseData extends ZadarmaResponseData {}
+final class UpdateCustomerResponseData extends ZadarmaResponseData
+{
+    /**
+     * @return array<array-key, mixed>|null
+     */
+    public function customer(): ?array
+    {
+        return $this->arrayValue('customer');
+    }
+}

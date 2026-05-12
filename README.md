@@ -77,7 +77,7 @@ $dto->arrayValue('info');
 $dto->listValue('senders');
 ```
 
-Selected endpoint DTOs also expose field-level methods for documented response keys:
+Endpoint DTOs also expose field-level methods for documented response keys:
 
 ```php
 use GracjanKubicki\LaravelZadarma\Saloon\Data\Info\GetBalanceResponseData;
@@ -91,6 +91,19 @@ $balance->currency();
 $sms->messages();
 $sms->cost();
 $sms->smsDetalization();
+```
+
+Typed request values can be passed inside the existing request parameter array:
+
+```php
+use GracjanKubicki\LaravelZadarma\Enums\CallInfoNotification;
+use GracjanKubicki\LaravelZadarma\Enums\ZadarmaBoolean;
+use GracjanKubicki\LaravelZadarma\Saloon\Requests\Pbx\SetCallInfoNotificationsRequest;
+
+new SetCallInfoNotificationsRequest([
+    CallInfoNotification::NotifyStart->value => ZadarmaBoolean::True,
+    CallInfoNotification::NotifyEnd->value => false,
+]);
 ```
 
 ## Endpoint Coverage
@@ -155,7 +168,33 @@ When enabled, the route:
 
 For `NOTIFY_START` and `NOTIFY_IVR`, Zadarma can use the HTTP response to dynamically route the current call. In that case, define your own application route and use `ZadarmaWebhook::fromRequest($request)` directly so your controller can return the required call-control response.
 
-Zadarma recommends limiting access to webhook URLs to `185.45.152.40/30`.
+```php
+use GracjanKubicki\LaravelZadarma\Webhooks\ZadarmaWebhookResponse;
+
+return ZadarmaWebhookResponse::ivrPlay(123)
+    ->withWaitDtmf(timeout: 5, attempts: 2, maxDigits: 1, name: 'main_menu');
+```
+
+Zadarma recommends limiting access to webhook URLs to `185.45.152.40/30`. The optional route can add the built-in allowlist middleware:
+
+```php
+'webhooks' => [
+    'ip_allowlist' => [
+        'enabled' => true,
+        'ranges' => ['185.45.152.40/30'],
+    ],
+],
+```
+
+## Examples
+
+- [Info](docs/info.md)
+- [SMS](docs/sms.md)
+- [PBX](docs/pbx.md)
+- [Webhooks](docs/webhooks.md)
+- [Teamsale CRM](docs/crm.md)
+- [Documents](docs/documents.md)
+- [Release](docs/release.md)
 
 ## Development
 

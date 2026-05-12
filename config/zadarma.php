@@ -16,6 +16,11 @@ return [
     'webhooks' => [
         'signature_verification' => env('ZADARMA_WEBHOOK_SIGNATURE_VERIFICATION', false),
 
+        'ip_allowlist' => [
+            'enabled' => env('ZADARMA_WEBHOOK_IP_ALLOWLIST_ENABLED', false),
+            'ranges' => ['185.45.152.40/30'],
+        ],
+
         'routes' => [
             'enabled' => env('ZADARMA_WEBHOOK_ROUTES_ENABLED', false),
             'path' => env('ZADARMA_WEBHOOK_ROUTE_PATH', 'zadarma/webhook'),

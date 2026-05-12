@@ -9,7 +9,7 @@ use GracjanKubicki\LaravelZadarma\Saloon\Data\ZadarmaResponseData;
 final class ListLanguagesResponseData extends ZadarmaResponseData
 {
     /**
-     * @return list<string>
+     * @return list<mixed>
      */
     public function languages(): array
     {

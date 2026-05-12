@@ -6,4 +6,13 @@ namespace GracjanKubicki\LaravelZadarma\Saloon\Data\Reseller;
 
 use GracjanKubicki\LaravelZadarma\Saloon\Data\ZadarmaResponseData;
 
-final class FindUserResponseData extends ZadarmaResponseData {}
+final class FindUserResponseData extends ZadarmaResponseData
+{
+    /**
+     * @return array<array-key, mixed>|null
+     */
+    public function user(): ?array
+    {
+        return $this->arrayValue('user');
+    }
+}

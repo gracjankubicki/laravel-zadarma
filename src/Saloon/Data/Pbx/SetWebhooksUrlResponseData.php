@@ -6,4 +6,10 @@ namespace GracjanKubicki\LaravelZadarma\Saloon\Data\Pbx;
 
 use GracjanKubicki\LaravelZadarma\Saloon\Data\ZadarmaResponseData;
 
-final class SetWebhooksUrlResponseData extends ZadarmaResponseData {}
+final class SetWebhooksUrlResponseData extends ZadarmaResponseData
+{
+    public function url(): ?string
+    {
+        return $this->string('url');
+    }
+}

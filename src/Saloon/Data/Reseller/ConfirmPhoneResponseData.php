@@ -6,4 +6,10 @@ namespace GracjanKubicki\LaravelZadarma\Saloon\Data\Reseller;
 
 use GracjanKubicki\LaravelZadarma\Saloon\Data\ZadarmaResponseData;
 
-final class ConfirmPhoneResponseData extends ZadarmaResponseData {}
+final class ConfirmPhoneResponseData extends ZadarmaResponseData
+{
+    public function number(): ?int
+    {
+        return $this->integer('number');
+    }
+}

@@ -9,7 +9,7 @@ use GracjanKubicki\LaravelZadarma\Saloon\Data\ZadarmaResponseData;
 final class ListCurrenciesResponseData extends ZadarmaResponseData
 {
     /**
-     * @return list<string>
+     * @return list<mixed>
      */
     public function currencies(): array
     {

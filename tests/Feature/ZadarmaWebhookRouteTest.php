@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use GracjanKubicki\LaravelZadarma\Events\ZadarmaWebhookReceived;
 use GracjanKubicki\LaravelZadarma\Http\Controllers\ZadarmaWebhookController;
+use GracjanKubicki\LaravelZadarma\Http\Middleware\ZadarmaWebhookIpAllowlist;
 use GracjanKubicki\LaravelZadarma\LaravelZadarmaServiceProvider;
 use GracjanKubicki\LaravelZadarma\Webhooks\ZadarmaWebhookEvent;
 use GracjanKubicki\LaravelZadarma\Webhooks\ZadarmaWebhookVerifier;
@@ -26,6 +27,18 @@ it('registers webhook route when enabled', function (): void {
     expect($route)->not->toBeNull()
         ->and($route?->uri())->toBe('zadarma/webhook')
         ->and($route?->methods())->toContain('GET', 'POST');
+});
+
+it('adds IP allowlist middleware to the optional webhook route when enabled', function (): void {
+    config()->set('zadarma.webhooks.ip_allowlist.enabled', true);
+
+    registerZadarmaWebhookRoute();
+
+    $routes = app(Router::class)->getRoutes();
+    $routes->refreshNameLookups();
+    $route = $routes->getByName('zadarma.webhook');
+
+    expect($route?->gatherMiddleware())->toContain(ZadarmaWebhookIpAllowlist::class);
 });
 
 it('returns zd echo challenge when webhook route is enabled', function (): void {
@@ -93,6 +106,55 @@ it('accepts valid webhook signatures when verification is enabled', function ():
     expect($response->getStatusCode())->toBe(Response::HTTP_NO_CONTENT);
 
     Event::assertDispatched(ZadarmaWebhookReceived::class);
+});
+
+it('allows webhook requests from configured Zadarma IP ranges', function (): void {
+    config()->set('zadarma.webhooks.ip_allowlist.enabled', true);
+
+    $request = Request::create('/zadarma/webhook', 'POST', server: ['REMOTE_ADDR' => '185.45.152.41']);
+    $response = (new ZadarmaWebhookIpAllowlist)->handle(
+        $request,
+        fn (): Response => response('', Response::HTTP_NO_CONTENT),
+    );
+
+    expect($response->getStatusCode())->toBe(Response::HTTP_NO_CONTENT);
+});
+
+it('skips webhook IP allowlist when middleware is disabled', function (): void {
+    config()->set('zadarma.webhooks.ip_allowlist.enabled', false);
+
+    $request = Request::create('/zadarma/webhook', 'POST', server: ['REMOTE_ADDR' => '203.0.113.10']);
+    $response = (new ZadarmaWebhookIpAllowlist)->handle(
+        $request,
+        fn (): Response => response('', Response::HTTP_NO_CONTENT),
+    );
+
+    expect($response->getStatusCode())->toBe(Response::HTTP_NO_CONTENT);
+});
+
+it('rejects webhook requests when configured IP ranges are empty', function (): void {
+    config()->set('zadarma.webhooks.ip_allowlist.enabled', true);
+    config()->set('zadarma.webhooks.ip_allowlist.ranges', []);
+
+    $request = Request::create('/zadarma/webhook', 'POST', server: ['REMOTE_ADDR' => '185.45.152.41']);
+    $response = (new ZadarmaWebhookIpAllowlist)->handle(
+        $request,
+        fn (): Response => response('', Response::HTTP_NO_CONTENT),
+    );
+
+    expect($response->getStatusCode())->toBe(Response::HTTP_FORBIDDEN);
+});
+
+it('rejects webhook requests outside configured Zadarma IP ranges', function (): void {
+    config()->set('zadarma.webhooks.ip_allowlist.enabled', true);
+
+    $request = Request::create('/zadarma/webhook', 'POST', server: ['REMOTE_ADDR' => '203.0.113.10']);
+    $response = (new ZadarmaWebhookIpAllowlist)->handle(
+        $request,
+        fn (): Response => response('', Response::HTTP_NO_CONTENT),
+    );
+
+    expect($response->getStatusCode())->toBe(Response::HTTP_FORBIDDEN);
 });
 
 function registerZadarmaWebhookRoute(): void

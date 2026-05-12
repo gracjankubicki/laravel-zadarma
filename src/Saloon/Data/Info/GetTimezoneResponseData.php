@@ -8,17 +8,17 @@ use GracjanKubicki\LaravelZadarma\Saloon\Data\ZadarmaResponseData;
 
 final class GetTimezoneResponseData extends ZadarmaResponseData
 {
+    public function datetime(): ?string
+    {
+        return $this->string('datetime');
+    }
+
     public function timezone(): ?string
     {
         return $this->string('timezone');
     }
 
-    public function dateTime(): ?string
-    {
-        return $this->string('datetime');
-    }
-
-    public function unixTime(): ?int
+    public function unixtime(): ?int
     {
         return $this->integer('unixtime');
     }

@@ -6,4 +6,13 @@ namespace GracjanKubicki\LaravelZadarma\Saloon\Data\VirtualNumbers;
 
 use GracjanKubicki\LaravelZadarma\Saloon\Data\ZadarmaResponseData;
 
-final class ListDirectNumbersResponseData extends ZadarmaResponseData {}
+final class ListDirectNumbersResponseData extends ZadarmaResponseData
+{
+    /**
+     * @return list<mixed>
+     */
+    public function info(): array
+    {
+        return $this->listValue('info');
+    }
+}

@@ -6,4 +6,13 @@ namespace GracjanKubicki\LaravelZadarma\Saloon\Data\Documents;
 
 use GracjanKubicki\LaravelZadarma\Saloon\Data\ZadarmaResponseData;
 
-final class GetGroupResponseData extends ZadarmaResponseData {}
+final class GetGroupResponseData extends ZadarmaResponseData
+{
+    /**
+     * @return array<array-key, mixed>|null
+     */
+    public function group(): ?array
+    {
+        return $this->arrayValue('group');
+    }
+}

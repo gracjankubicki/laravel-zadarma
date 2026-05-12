@@ -6,4 +6,10 @@ namespace GracjanKubicki\LaravelZadarma\Saloon\Data\Sip;
 
 use GracjanKubicki\LaravelZadarma\Saloon\Data\ZadarmaResponseData;
 
-final class UpdateSipPasswordResponseData extends ZadarmaResponseData {}
+final class UpdateSipPasswordResponseData extends ZadarmaResponseData
+{
+    public function sip(): ?string
+    {
+        return $this->string('sip');
+    }
+}

@@ -6,4 +6,10 @@ namespace GracjanKubicki\LaravelZadarma\Saloon\Data\Reseller;
 
 use GracjanKubicki\LaravelZadarma\Saloon\Data\ZadarmaResponseData;
 
-final class RegisterUserResponseData extends ZadarmaResponseData {}
+final class RegisterUserResponseData extends ZadarmaResponseData
+{
+    public function userId(): ?int
+    {
+        return $this->integer('user_id');
+    }
+}

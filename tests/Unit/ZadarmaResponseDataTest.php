@@ -18,6 +18,7 @@ use GracjanKubicki\LaravelZadarma\Saloon\Data\Sms\SendSmsResponseData;
 use GracjanKubicki\LaravelZadarma\Saloon\Data\ZadarmaResponseData;
 use GracjanKubicki\LaravelZadarma\Saloon\Requests\Info\GetBalanceRequest;
 use GracjanKubicki\LaravelZadarma\Saloon\ZadarmaConnector;
+use Illuminate\Support\Str;
 use Saloon\Http\Faking\MockClient;
 use Saloon\Http\Faking\MockResponse;
 
@@ -247,4 +248,37 @@ it('exposes typed accessors for documented SMS responses', function (): void {
     ], 200);
 
     expect($senderIds->senders())->toBe(['Teamsale', '1234567890']);
+});
+
+it('executes every endpoint DTO field accessor without requiring a full payload', function (
+    string $group,
+    string $requestClass,
+    string $dataClass,
+): void {
+    $class = 'GracjanKubicki\\LaravelZadarma\\Saloon\\Data\\'.$group.'\\'.$dataClass;
+    $reflection = new ReflectionClass($class);
+    $dto = new $class([], 200);
+
+    foreach ($reflection->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
+        if ($method->getDeclaringClass()->getName() !== $class || $method->getNumberOfRequiredParameters() > 0) {
+            continue;
+        }
+
+        $dto->{$method->getName()}();
+    }
+
+    expect($dto)->toBeInstanceOf(ZadarmaResponseData::class);
+})->with(require __DIR__.'/../Fixtures/endpoints.php');
+
+it('keeps documented response accessor metadata aligned with DTO methods', function (): void {
+    /** @var array<class-string<ZadarmaResponseData>, array<string, mixed>> $accessors */
+    $accessors = require __DIR__.'/../Fixtures/response-accessors.php';
+
+    foreach ($accessors as $class => $fields) {
+        expect(class_exists($class))->toBeTrue();
+
+        foreach (array_keys($fields) as $field) {
+            expect(method_exists($class, Str::camel((string) $field)))->toBeTrue();
+        }
+    }
 });

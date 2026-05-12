@@ -17,4 +17,24 @@ final class CheckNumberResponseData extends ZadarmaResponseData
     {
         return $this->boolean('is_mobile');
     }
+
+    public function from(): ?string
+    {
+        return $this->string('from');
+    }
+
+    public function lang(): ?string
+    {
+        return $this->string('lang');
+    }
+
+    public function time(): ?string
+    {
+        return $this->string('time');
+    }
+
+    public function to(): ?string
+    {
+        return $this->string('to');
+    }
 }

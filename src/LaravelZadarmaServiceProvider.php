@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace GracjanKubicki\LaravelZadarma;
 
 use GracjanKubicki\LaravelZadarma\Http\Controllers\ZadarmaWebhookController;
+use GracjanKubicki\LaravelZadarma\Http\Middleware\ZadarmaWebhookIpAllowlist;
 use GracjanKubicki\LaravelZadarma\Saloon\ZadarmaConnector;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -47,6 +48,11 @@ final class LaravelZadarmaServiceProvider extends ServiceProvider
         $path = $this->app['config']->get('zadarma.webhooks.routes.path', 'zadarma/webhook');
         $name = $this->app['config']->get('zadarma.webhooks.routes.name', 'zadarma.webhook');
         $middleware = $this->app['config']->get('zadarma.webhooks.routes.middleware', []);
+
+        if ((bool) $this->app['config']->get('zadarma.webhooks.ip_allowlist.enabled', false)) {
+            $middleware = is_array($middleware) ? $middleware : [$middleware];
+            $middleware[] = ZadarmaWebhookIpAllowlist::class;
+        }
 
         $route = Route::match(['GET', 'POST'], trim(is_string($path) ? $path : 'zadarma/webhook', '/'), ZadarmaWebhookController::class);
 

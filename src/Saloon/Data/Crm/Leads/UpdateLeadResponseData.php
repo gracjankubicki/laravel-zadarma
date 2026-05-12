@@ -6,4 +6,13 @@ namespace GracjanKubicki\LaravelZadarma\Saloon\Data\Crm\Leads;
 
 use GracjanKubicki\LaravelZadarma\Saloon\Data\ZadarmaResponseData;
 
-final class UpdateLeadResponseData extends ZadarmaResponseData {}
+final class UpdateLeadResponseData extends ZadarmaResponseData
+{
+    /**
+     * @return array<array-key, mixed>|null
+     */
+    public function lead(): ?array
+    {
+        return $this->arrayValue('lead');
+    }
+}

@@ -6,4 +6,10 @@ namespace GracjanKubicki\LaravelZadarma\Saloon\Data\PbxIvr;
 
 use GracjanKubicki\LaravelZadarma\Saloon\Data\ZadarmaResponseData;
 
-final class CreateIvrResponseData extends ZadarmaResponseData {}
+final class CreateIvrResponseData extends ZadarmaResponseData
+{
+    public function menuId(): ?int
+    {
+        return $this->integer('menu_id');
+    }
+}

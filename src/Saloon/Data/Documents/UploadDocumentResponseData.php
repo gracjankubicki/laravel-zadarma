@@ -6,4 +6,10 @@ namespace GracjanKubicki\LaravelZadarma\Saloon\Data\Documents;
 
 use GracjanKubicki\LaravelZadarma\Saloon\Data\ZadarmaResponseData;
 
-final class UploadDocumentResponseData extends ZadarmaResponseData {}
+final class UploadDocumentResponseData extends ZadarmaResponseData
+{
+    public function docName(): ?string
+    {
+        return $this->string('doc_name');
+    }
+}
