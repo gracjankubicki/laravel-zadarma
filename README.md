@@ -184,4 +184,10 @@ The intended public package name is:
 gracjankubicki/laravel-zadarma
 ```
 
-After the GitHub repository is created and tagged, publish the package on Packagist under the same name.
+Composer package versions are published from Git tags. To publish a new version, run the `Release` workflow from GitHub Actions with a semantic version tag:
+
+```bash
+gh workflow run release.yml --repo gracjankubicki/laravel-zadarma -f version=v1.0.0 -f prerelease=false
+```
+
+The workflow validates the package, creates the Git tag, creates a GitHub Release and lets the configured Packagist GitHub webhook update the Composer package.
